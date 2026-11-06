@@ -53,7 +53,7 @@ Media: the copy asks for 6, Drive has 14 unique files (16 with two duplicates). 
 - [ ] **3 B/A files marked "hide her face"** (`hide her face.jpg` x2, `hide the face.jpg`, all Maneesha's "Story of Conviction") are WITHHELD. Edit the faces out, then drop them in as ba-29..31.
 - [ ] **ba-28** (WhatsApp image, weights handwritten "72.2 KG 6 JAN 25" / "63.10 kg 29 march 2025") shows the client's face and has no name. Confirm consent and whose story it is.
 - [ ] **Chat screenshots show client names, and chat-11 shows a full phone number (+91 93065 74765).** Confirm consent / blur before launch.
-- [ ] **Video testimonials**: the copy has 5 slots, Drive has only 2 (`WhatsApp Video 2026-10-21 at 5.12.25 PM.mp4`, 86 MB; `...5.12.26 PM.mp4`, 2.8 MB), in `assets-source/video-testimonials/`. Not shipped: they need compressing (or hosting) first, and 3 more videos are missing. Folder: https://drive.google.com/drive/folders/1zB6Px5cx94-4RLp_K34YoGFeqoa6gGQP
+- Video testimonials play from Vimeo only, never downloaded. Add each new Vimeo id to `VIDEOS` in `app/_landing/Stories.tsx`.
 - [ ] **VSL video + its THUMBNAIL** (16:9): not supplied. Set `VIMEO_ID` and `POSTER` in `app/_landing/VslFrame.tsx`. The play disc does nothing until then.
 - [x] **Hero "[Photos]"**: face crops from the "after" side of ba-02, ba-20, ba-18, ba-15 (Atul 2026-11-06), `public/avatars/av-01..04.webp`.
 - [x] **Video testimonial 1**: Vimeo 1242682102 (the 86 MB Drive video, 9:16, 6:52), poster `public/video-testimonials/vt-01.webp` from Vimeo's thumbnail. The section shows only real videos; add more to `VIDEOS` in `app/_landing/Stories.tsx` as they are hosted (the 2.8 MB Drive video is not on Vimeo yet).
