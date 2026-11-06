@@ -1,0 +1,79 @@
+/* footer.css · scope .sm-foot · loaded from the root layout because the footer is on every surface */
+
+.sm-foot {
+  background: var(--bg-dark);
+  border-top: 1px solid var(--border-dark);
+  padding: 38px 0 34px;
+  text-align: center;
+}
+.sm-foot .sm-foot-wrap {
+  max-width: 1180px;
+  margin: 0 auto;
+  padding: 0 22px;
+}
+
+.sm-foot .sm-foot-lines {
+  font-family: var(--fb);
+  font-size: 13px;
+  line-height: 1.85;
+  color: var(--muted-dark);
+  margin: 0 0 18px;
+}
+.sm-foot .sm-foot-lines .sm-foot-entity {
+  color: var(--ink-dark-soft);
+  font-weight: 700;
+  letter-spacing: .04em;
+}
+.sm-foot .sm-foot-lines a {
+  color: var(--brand-bright);
+  border-bottom: 1px solid transparent;
+  transition: border-color .2s;
+}
+.sm-foot .sm-foot-lines a:hover { border-bottom-color: var(--brand-bright); }
+.sm-foot .sm-foot-lines a:focus-visible { outline: 2px solid var(--action, var(--brand)); outline-offset: 2px; }
+.sm-foot .sm-foot-sep { color: var(--border-dark-strong); margin: 0 9px; }
+
+.sm-foot .sm-foot-links {
+  display: flex; flex-wrap: wrap; justify-content: center;
+  gap: 10px 22px;
+  padding-top: 18px;
+  border-top: 1px solid var(--border-dark);
+}
+.sm-foot .sm-foot-links a {
+  font-family: var(--fb);
+  font-size: 11px; font-weight: 700;
+  letter-spacing: .14em; text-transform: uppercase;
+  color: var(--ink-dark-soft);
+  border-bottom: 1px solid transparent;
+  transition: color .2s, border-color .2s;
+}
+.sm-foot .sm-foot-links a:hover { color: var(--ink-dark); border-bottom-color: var(--brand-bright); }
+.sm-foot .sm-foot-links a:focus-visible { outline: 2px solid var(--action, var(--brand)); outline-offset: 3px; }
+
+.sm-foot .sm-foot-note {
+  max-width: 760px; margin: 18px auto 0;
+  font-family: var(--fb); font-size: 11.5px; line-height: 1.7;
+  color: var(--muted-dark);
+}
+
+.sm-foot .sm-foot-copy {
+  font-family: var(--fb);
+  font-size: 11px; letter-spacing: .06em;
+  color: var(--muted-dark);
+  margin: 16px 0 0;
+}
+
+.sm-foot.sm-foot-folded {
+  background: none;
+  border-top: 0;
+  margin-top: 0;
+  padding: 0;
+}
+
+@media (max-width: 640px) {
+  .sm-foot { padding: 30px 0 26px; }
+  .sm-foot .sm-foot-lines { font-size: 12.5px; }
+  .sm-foot .sm-foot-links { gap: 8px 16px; }
+  .sm-foot .sm-foot-links a { font-size: 10px; letter-spacing: .1em; }
+  .sm-foot.sm-foot-folded { margin-top: 42px; }
+}

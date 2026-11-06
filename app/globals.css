@@ -1,0 +1,112 @@
+/* ════════════════════════════════════════════════════════════════
+   TGO-SOMYA · globals.css
+   PART 1 of the SDP VSL skin: the THEME token block. landing.css is
+   token-only, so the whole site re-themes from here.
+
+   THEME: Blush Rose. Light theme, rose primary, deep plum for the dark
+   bands. Change this block only.
+
+   Tokens live on :root so the checkout, booking, thank-you, policy and
+   footer stylesheets read the same palette. The next/font variables they
+   reference must be set on <html> by app/layout.tsx.
+================================================================ */
+
+:root {
+  /* ---- ACCENT ---- */
+  --brand: #C2416B;  --brand-rgb: 194,65,107;
+  --brand-bright: #E0789A;  --brand-bright-rgb: 224,120,154;
+  --brand-deep: #8E2550;
+
+  /* ---- LIGHT NEUTRALS ---- */
+  --bg: #FFFFFF;
+  --bg-alt: #FDF4F6;
+  --card: #FFFFFF;
+  --ink: #2A1520;  --ink-rgb: 42,21,32;
+  --ink-soft: #5E4652;
+  --muted: #86707B;
+  --border: #F2DDE4;
+  --border-strong: #E6C3CF;
+
+  /* ---- DARK NEUTRALS (deep plum) ---- */
+  --bg-dark: #2B0F1E;
+  --bg-dark-alt: #3A1529;
+  --bg-dark-elev: #4E1D37;
+  --ink-dark: #FFF6F9;
+  --ink-dark-soft: #F1D5DF;
+  --muted-dark: #C9A0B1;
+  --border-dark: #4A2236;
+  --border-dark-strong: #683049;
+
+  /* ---- FUNCTIONAL ---- */
+  --success: #2F9E6E;
+  --danger: #C8283F;  --danger-rgb: 200,40,63;
+  --star: #F5B83D;
+  --gold: #E8A23A;
+
+  /* ---- TYPE: Bebas Neue display, Manrope body ---- */
+  --fh: var(--font-bebas, 'Bebas Neue'), 'Bebas Neue', 'Helvetica Neue', sans-serif;
+  --fb: var(--font-manrope, 'Manrope'), 'Manrope', 'Helvetica Neue', sans-serif;
+  --fh-weight: 400;
+  --fh-weight-sub: 400;
+
+  /* ---- RADII ---- */
+  --r-sm: 8px; --r: 12px; --r-lg: 18px; --r-xl: 28px;
+
+  /* ---- ROLE ALIASES ---- */
+  --brand-soft: rgba(var(--brand-rgb), .10);
+  --brand-ring: rgba(var(--brand-rgb), .25);
+  --brand-fill: rgba(var(--brand-rgb), .08);
+  --brand-text: var(--brand-deep);
+  --leaf: var(--brand);
+  --action: var(--brand);  --action-rgb: var(--brand-rgb);
+  --action-bright: var(--brand-bright);
+  --action-deep: var(--brand-deep);
+  --action-fill: rgba(var(--brand-rgb), .08);
+  --accent-word: var(--brand);
+  --accent-text-light: var(--brand-deep);
+  --accent-text-dark: var(--brand-bright);
+  --announce-chip: var(--bg-dark);
+  --announce-chip-ink: #FFFFFF;
+  --cta-ink: #FFFFFF;
+
+  /* ---- DERIVED ---- */
+  --grad-brand:     linear-gradient(135deg, var(--brand-deep), var(--brand));
+  --grad-announce:  linear-gradient(90deg, var(--brand-deep), var(--brand) 50%, var(--brand-deep));
+  --grad-cta:       linear-gradient(180deg, #D4567F 0%, var(--brand) 50%, var(--brand-deep) 100%);
+  --grad-urgency:   linear-gradient(135deg, var(--danger) 0%, #E04A5F 100%);
+  --grad-guarantee: linear-gradient(135deg, var(--bg-dark-alt), var(--bg-dark-elev));
+  --hero-stage:     linear-gradient(180deg, #FFF8FA 0%, #FCEBF0 100%);
+  --hero-bloom:     radial-gradient(circle, rgba(var(--brand-rgb), .14), transparent 65%);
+  --glow-cta:       0 8px 28px rgba(var(--brand-rgb), .35);
+  --glow-cta-hover: 0 12px 36px rgba(var(--brand-rgb), .5);
+  --shadow-card:    0 2px 12px rgba(var(--ink-rgb), .04);
+  --shadow-card-hover: 0 8px 24px rgba(var(--brand-rgb), .12);
+  --inset-hi:       inset 0 1px 0 rgba(255,255,255,.22);
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+* { margin: 0; padding: 0; }
+
+html, body {
+  background: var(--bg);
+  color: var(--ink);
+  font-family: var(--fb);
+  line-height: 1.6;
+  font-size: 16px;
+  -webkit-font-smoothing: antialiased;
+}
+
+a { color: var(--brand-text); text-decoration: none; }
+img { max-width: 100%; height: auto; display: block; }
+button { font-family: inherit; cursor: pointer; }
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
