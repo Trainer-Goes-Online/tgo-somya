@@ -4,7 +4,7 @@
  *   checkout -> PAYMENT -> /book-a-call?p=<payment_id> -> BOOKING -> /thank-you
  *
  * The first page after a payment: it fires GA4's purchase keyed on the payment
- * id (Meta's Purchase is the webhook's), ViewContent on arrival, and Schedule
+ * id (Meta's sales is the webhook's), ViewContent on arrival, and call_booked
  * from Cal's bookingSuccessful callback before handing over to /thank-you.
  */
 

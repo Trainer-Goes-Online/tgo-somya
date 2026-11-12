@@ -4,12 +4,12 @@
  * /checkout
  *
  *   mount            -> trackBeginCheckout() + trackAddToCart()
- *   submit           -> trackInitiateCheckout() (+ QualifiedLead)
+ *   submit           -> trackInitiateCheckout() (+ qualified_form)
  *                    -> POST /api/razorpay/create-order
  *                    -> new window.Razorpay({...}).open()
  *   handler(payment) -> /book-a-call?p=<payment_id>
  *
- * The handler only navigates. Purchase belongs to the webhook.
+ * The handler only navigates. sales belongs to the webhook.
  */
 
 import Link from 'next/link';
@@ -87,7 +87,7 @@ const COUNTRIES: { iso: string; dial: string; label: string }[] = [
   { iso: 'za', dial: '+27', label: 'South Africa (+27)' },
 ];
 
-/* The QualifiedLead split. Working professional qualifies: the copy is written
+/* The qualified_form split. Working professional qualifies: the copy is written
    "For Busy Working Women". One comparison in lib/track.ts and one in
    app/api/meta/event/route.ts. */
 const OCCUPATIONS = [

@@ -31,14 +31,10 @@ export function originOnly(url: string): string {
 
 /** Closed unions: a free-form string is how a health term reaches Meta. */
 export type StandardEvent =
-  | 'ViewContent'
-  | 'AddToCart'
-  | 'InitiateCheckout'
-  | 'Purchase'
-  | 'Schedule';
+  | 'ViewContent';
 
-/** A segment label on InitiateCheckout, never a new funnel stage. */
-export type CustomEvent = 'QualifiedLead';
+/** Atul's names; Meta treats them as custom events. qualified_form is a segment label on ic_event, never a new funnel stage. */
+export type CustomEvent = 'atc_event' | 'ic_event' | 'sales' | 'call_booked' | 'qualified_form';
 
 export type SendableEvent = StandardEvent | CustomEvent;
 

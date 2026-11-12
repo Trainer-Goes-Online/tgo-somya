@@ -28,7 +28,7 @@ export type OrderContext = {
   /** "+91", kept apart from the phone, which Razorpay returns as full E.164. */
   dialCode: string;
   country: string;
-  /** The QualifiedLead segment answer. */
+  /** The qualified_form segment answer. */
   occupation: string;
   externalId: string;
   fbc: string;

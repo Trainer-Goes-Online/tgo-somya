@@ -68,7 +68,7 @@ export function trackViewItem() {
 
 /** Checkout ARRIVAL, from the checkout's mount only. Never a CTA click. */
 export function trackAddToCart() {
-  capi('AddToCart');
+  capi('atc_event');
   ga4AddToCart(money);
 }
 
@@ -77,29 +77,29 @@ export function trackBeginCheckout() {
 }
 
 /**
- * Details valid and the sheet is opening. QualifiedLead is its own call, for
+ * Details valid and the sheet is opening. qualified_form is its own call, for
  * the qualifying answer only: Meta dedupes on name + id and the route derives
  * a different id per name.
  */
 export function trackInitiateCheckout(person: Person) {
-  capi('InitiateCheckout', person);
+  capi('ic_event', person);
   if (person.occupation === 'working_professional') {
-    capi('QualifiedLead', person);
+    capi('qualified_form', person);
   }
   ga4AddPaymentInfo({ value: VALUE, currency: 'INR' });
 }
 
-/** GA4 only. Meta's Purchase comes from the webhook. */
+/** GA4 only. Meta's sales comes from the webhook. */
 export function trackPurchase(transactionId: string) {
   once(`purchase_${transactionId}`, () => {
     ga4Purchase({ transactionId, ...money });
   });
 }
 
-/** Booked, from Cal's bookingSuccessful callback only. No value: the fee counted on Purchase. */
+/** Booked, from Cal's bookingSuccessful callback only. No value: the fee counted on sales. */
 export function trackSchedule(paymentId: string) {
   once(`schedule_${paymentId || 'anon'}`, () => {
-    capi('Schedule', { paymentId });
+    capi('call_booked', { paymentId });
     ga4GenerateLead({ value: 0, currency: 'INR' });
   });
 }

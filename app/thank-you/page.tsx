@@ -5,7 +5,7 @@
  *
  * The buyer has paid AND booked, so this page prepares them for the call.
  * It FIRES NOTHING: GA4's purchase went from the booking page keyed on the
- * payment id, Meta's Purchase from the webhook, and Schedule from Cal's
+ * payment id, Meta's sales from the webhook, and call_booked from Cal's
  * bookingSuccessful on /book-a-call. There is no CTA to book here; on a page
  * reached only by booking, that is a bug.
  */

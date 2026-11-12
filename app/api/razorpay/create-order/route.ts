@@ -16,7 +16,7 @@ import {
 
 /**
  * Creates the Razorpay order the browser then pays. The webhook that fires
- * Purchase receives only what Razorpay stored, and this is the last request
+ * sales receives only what Razorpay stored, and this is the last request
  * the buyer's own browser makes, so the notes are written here.
  *
  * 15 note keys at 256 chars each, and Razorpay REJECTS the order past either.

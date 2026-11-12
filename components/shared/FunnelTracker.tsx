@@ -7,7 +7,7 @@ import { trackViewItem } from '@/lib/track';
 
 /**
  * ViewContent on the landing page only, gated on the pathname from the root
- * layout. AddToCart is the checkout's own mount, never a CTA click.
+ * layout. atc_event is the checkout's own mount, never a CTA click.
  */
 export default function FunnelTracker() {
   const pathname = usePathname();

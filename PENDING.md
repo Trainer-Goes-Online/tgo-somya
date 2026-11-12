@@ -26,7 +26,7 @@ Nothing below is invented. Every item is UNKNOWN until Atul or the client suppli
 ## 3 · Booking: DONE
 
 - Cal.com `ggfit/1-on-1-consultation` (the client snippet said `ggfit/30min`, which 404s) (`CAL_LINK` in `lib/booking.ts`), embed settings match the client's snippet.
-- In Cal's dashboard, leave the event type's own **redirect EMPTY**. If set it wins over `bookingSuccessful`, `Schedule` never fires and the buyer skips `/thank-you`.
+- In Cal's dashboard, leave the event type's own **redirect EMPTY**. If set it wins over `bookingSuccessful`, `call_booked` never fires and the buyer skips `/thank-you`.
 
 ## 4 · Brand
 
@@ -83,7 +83,7 @@ Media: the copy asks for 6, Drive has 14 unique files (16 with two duplicates). 
 2. Domain: set the apex as Vercel's primary, then `curl -sS -o /dev/null -D - https://<domain> | grep -iE '^HTTP/|^location:'`; `NEXT_PUBLIC_SITE_URL` = the host that returns 200, no trailing slash.
 3. Fill `.env.local` and Vercel env.
 4. Razorpay → Settings → Webhooks: register `https://<domain>/api/razorpay/webhook` for `payment.captured`; its secret is `RAZORPAY_WEBHOOK_SECRET`. The webhook only acts on orders with `notes.kind = 'somya_start'` (`lib/checkout-config.ts`) and returns 200 for anything else on the account.
-5. Meta: send a test purchase with `META_CAPI_TEST_EVENT_CODE`, check Purchase in Test Events, then **delete the test code**. Add `Schedule` and `QualifiedLead` to AEM priorities if wanted.
+5. Meta: send a test purchase with `META_CAPI_TEST_EVENT_CODE`, check `sales` in Test Events, then **delete the test code**. Meta events are custom names (`atc_event`, `ic_event`, `sales`, `call_booked`, `qualified_form`; ViewContent stays standard): create a custom conversion on `sales` to optimise campaigns for it.
 6. Pabbly: POST a sample payload with `is_test: true`, map every column, then one with `is_test: false` to confirm the live branch.
 7. GA4 + Clarity ids into env (`components/shared/Analytics.tsx` renders both; Clarity script id is `ms-clarity`).
 8. Clear every `[TODO]` in §1 to §4, set `OFFER_PENDING = false`, remove `robots: noindex` from `app/layout.tsx` when the claims are signed off.

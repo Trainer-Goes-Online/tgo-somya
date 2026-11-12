@@ -10,25 +10,25 @@ import {
 import { readClientIp, readClientUserAgent } from '@/lib/request-signals';
 
 /**
- * Every event that is not a proven payment. Purchase is NOT on the allow-list,
+ * Every event that is not a proven payment. sales is NOT on the allow-list,
  * so this public endpoint cannot forge a sale; the Razorpay webhook owns it.
  *
- * Schedule is here because Cal confirms a booking in the browser and there is
- * no Cal webhook. A forged Schedule inflates a mid-funnel count and carries no
+ * call_booked is here because Cal confirms a booking in the browser and there is
+ * no Cal webhook. A forged call_booked inflates a mid-funnel count and carries no
  * value. If Cal webhooks are ever wired, move it server-side and drop it here.
  */
 const ALLOWED: SendableEvent[] = [
   'ViewContent',
-  'AddToCart',
-  'InitiateCheckout',
-  'QualifiedLead',
-  'Schedule',
+  'atc_event',
+  'ic_event',
+  'qualified_form',
+  'call_booked',
 ];
 
 const OCCUPATIONS: Occupation[] = ['working_professional', 'homemaker'];
 
-/* Schedule carries no value: the fee was counted on Purchase. */
-const ZERO_VALUE: SendableEvent[] = ['Schedule'];
+/* call_booked carries no value: the fee was counted on sales. */
+const ZERO_VALUE: SendableEvent[] = ['call_booked'];
 
 export async function POST(req: Request) {
   if (!capiReady()) {
@@ -55,7 +55,7 @@ export async function POST(req: Request) {
 
   /* Working professional qualifies (the copy is "For Busy Working Women").
      Flipping it is this comparison plus one in lib/track.ts. */
-  if (eventName === 'QualifiedLead' && occupation !== 'working_professional') {
+  if (eventName === 'qualified_form' && occupation !== 'working_professional') {
     return NextResponse.json({ ok: false, reason: 'not-qualified' }, { status: 400 });
   }
 

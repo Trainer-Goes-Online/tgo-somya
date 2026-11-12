@@ -14,7 +14,7 @@ import { readOrderContext } from '@/lib/order-notes';
 import { pabblyReady, sendPabblyPurchase } from '@/lib/pabbly';
 
 /**
- * The only place a Purchase is reported. A browser-side one would miss every
+ * The only place Meta's sales event is reported. A browser-side one would miss every
  * UPI payer who completes in their bank app and never returns to the tab.
  */
 export async function POST(req: Request) {
@@ -90,7 +90,7 @@ export async function POST(req: Request) {
   const eventSourceUrl = CHECKOUT_CONFIG.fallbackEventSourceUrl;
   if (!siteUrlReady()) {
     console.error(
-      '[rzp-webhook] NEXT_PUBLIC_SITE_URL is unset, so event_source_url is empty on this Purchase',
+      '[rzp-webhook] NEXT_PUBLIC_SITE_URL is unset, so event_source_url is empty on this sales event',
     );
   }
 
@@ -145,7 +145,7 @@ export async function POST(req: Request) {
     : { ok: false, status: 0 };
 
   if (!capiReady()) {
-    console.warn('[rzp-webhook] CAPI not configured, Meta Purchase not sent');
+    console.warn('[rzp-webhook] CAPI not configured, Meta sales not sent');
     return NextResponse.json({
       ok: true,
       capi: 'skipped',
@@ -158,7 +158,7 @@ export async function POST(req: Request) {
   const result = await sendCapiEvent({
     pixelId: CHECKOUT_CONFIG.meta.pixelId,
     accessToken: CHECKOUT_CONFIG.meta.accessToken,
-    eventName: 'Purchase',
+    eventName: 'sales',
     eventId: paymentId,
     eventSourceUrl,
     user: {

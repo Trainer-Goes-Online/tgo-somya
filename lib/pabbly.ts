@@ -1,7 +1,7 @@
 /**
  * Pabbly Connect: the fulfilment hand-off. Analytics tells Meta and GA4 that a
  * sale happened; this tells the automation WHO BOUGHT. It fires from the
- * Razorpay webhook and nowhere else, for the same reason Purchase does.
+ * Razorpay webhook and nowhere else, for the same reason Meta's sales does.
  *
  * Failure here must never fail the webhook: Razorpay retries a non-200 and a
  * retry re-fires Meta and GA4, so it reports its own success and swallows its

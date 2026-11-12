@@ -4,6 +4,6 @@ export const PAY_KEY = 'sm_payment_id';
 
 /**
  * Cal.com "handle/event-slug". In Cal's dashboard, leave the event type's own
- * redirect EMPTY, or it wins over bookingSuccessful and Schedule never fires.
+ * redirect EMPTY, or it wins over bookingSuccessful and call_booked never fires.
  */
 export const CAL_LINK = 'ggfit/1-on-1-consultation';
