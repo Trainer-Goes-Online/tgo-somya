@@ -38,8 +38,7 @@ declare global {
   }
 }
 
-/** ⚠️ Somya's photo has not been supplied. Set the /public path and bump ASSET_V. */
-const PHOTO_SRC = '';
+const PHOTO_SRC = '/somya/somya-circle.webp';
 
 /** ⚠️ No square logo supplied. Razorpay renders `image` in its own iframe, so
  *  it must be an absolute url: `${window.location.origin}${asset(SQUARE_LOGO)}`. */

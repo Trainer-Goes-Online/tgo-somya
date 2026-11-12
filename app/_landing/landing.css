@@ -436,20 +436,17 @@
   50%      { box-shadow: 0 0 0 5px rgba(var(--brand-rgb), .04); }
 }
 
-.sdp-vsl-frame {
-  position: relative; width: 100%; max-width: 900px;
-  margin: 0 auto 18px;
-  padding: 6px; border-radius: var(--r-xl);
-  background:
-    linear-gradient(135deg, rgba(var(--brand-rgb), .28), rgba(var(--brand-bright-rgb), .12) 60%, transparent),
-    var(--bg);
-  border: 1px solid var(--border-strong);
-  box-shadow: 0 30px 70px -34px rgba(var(--ink-rgb), .35), 0 0 0 1px rgba(var(--brand-rgb), .10);
+.sdp-hero-portrait {
+  width: clamp(200px, 24vw, 280px); aspect-ratio: 1;
+  margin: 6px auto 30px;
+  padding: 6px; border-radius: 50%;
+  background: linear-gradient(135deg, var(--brand-bright), var(--brand) 55%, var(--brand-deep));
+  box-shadow: 0 0 0 10px rgba(var(--brand-rgb), .08), 0 30px 60px -28px rgba(var(--ink-rgb), .45);
 }
-.sdp-vsl {
-  position: relative; width: 100%;
-  border-radius: calc(var(--r-xl) - 6px); overflow: hidden;
-  background: linear-gradient(160deg, var(--bg-alt), var(--border));
+.sdp-root .sdp-hero-portrait img {
+  width: 100%; height: 100%; max-width: none;
+  border-radius: 50%; object-fit: cover;
+  border: 4px solid var(--bg);
 }
 
 /* Click-to-play: shared by the VSL and the video testimonials */

@@ -1,14 +1,15 @@
 import type { CSSProperties } from 'react';
 import { feeLabel } from '@/lib/site';
+import { asset } from './asset-version';
 import { CtaLockup } from './CtaLockup';
-import { VslFrame } from './VslFrame';
 
 /**
- * BEAT 1 · hero / VSL (§8 focal media, the heaviest composite).
+ * BEAT 1 · hero.
  *
  * Copy order, fixed: the question as the audience pill, three-tier H1
  * (who she helps, the result, the qualifier), deck, lead, the copy's two
- * rows of four concerns, VSL, CTA lockup, credibility table. The copy has
+ * rows of four concerns, Somya's portrait in a circle, CTA lockup,
+ * credibility table. The copy has
  * no outcome-pill row and no watch cue, so neither is built.
  */
 const CHIP_ROWS = [
@@ -70,7 +71,10 @@ export function Hero() {
           ))}
         </div>
 
-        <VslFrame />
+        <div className="sdp-hero-portrait" data-sdp-reveal style={d('.22s')}>
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img src={asset('/somya/somya-circle.webp')} alt="Somya Luhadia" width={640} height={640} decoding="async" />
+        </div>
 
         <div data-sdp-reveal style={d('.26s')}>
           <CtaLockup />

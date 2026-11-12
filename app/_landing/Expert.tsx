@@ -13,11 +13,8 @@ import { SectionMasthead } from './SectionMasthead';
  * The six media features close the beat as one row moving right to left
  * (the copy's instruction), fixed height so no headline or caption in a
  * scan is cropped. The set repeats once so it outruns a wide screen.
- *
- * TO FILL: Somya's solo picture at public/somya/somya-solo.webp, then set
- * PHOTO.src to that path, its real w/h, and bump ASSET_V.
  */
-const PHOTO = { src: '', w: 720, h: 900 };
+const PHOTO = { src: '/somya/somya-solo.webp', w: 960, h: 1200 };
 
 const CREDS = [
   { Icon: UsersIcon, text: <><b>1.5M+</b> Social Media Following</> },

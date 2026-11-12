@@ -3,7 +3,7 @@
  * the browser, at the CDN edge and in Next's image optimizer, so bump ASSET_V
  * in the same pass as any artwork swap.
  */
-export const ASSET_V = '3';
+export const ASSET_V = '4';
 
 export function asset(path: string): string {
   if (!path) return '';
