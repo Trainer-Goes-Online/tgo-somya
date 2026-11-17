@@ -73,7 +73,13 @@ export function Hero() {
 
         <div className="sdp-hero-portrait" data-sdp-reveal style={d('.22s')}>
           {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img src={asset('/somya/somya-circle.webp')} alt="Somya Luhadia" width={640} height={640} decoding="async" />
+          <img
+            src={asset('/somya/somya-hero.webp')}
+            alt="Somya Luhadia: 1.5M+ social media audience, 1000+ women coached, 11+ years in women’s health"
+            width={1200}
+            height={833}
+            decoding="async"
+          />
         </div>
 
         <div data-sdp-reveal style={d('.26s')}>
