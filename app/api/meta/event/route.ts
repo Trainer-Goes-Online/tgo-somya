@@ -96,7 +96,10 @@ export async function POST(req: Request) {
       clientIp: readClientIp(req) || undefined,
       clientUserAgent: readClientUserAgent(req) || undefined,
     },
-    valueRupees: ZERO_VALUE.includes(eventName) ? 0 : CHECKOUT_CONFIG.amountRupees,
+    /* ic_event carries the cart the sheet opens with, bump included. */
+    valueRupees: ZERO_VALUE.includes(eventName)
+      ? 0
+      : CHECKOUT_CONFIG.amountRupees + (body.bump === true ? CHECKOUT_CONFIG.bumpRupees : 0),
     currency: CHECKOUT_CONFIG.currency,
     occupation,
     testEventCode: CHECKOUT_CONFIG.meta.testEventCode || undefined,

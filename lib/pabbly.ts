@@ -50,6 +50,9 @@ export type PabblyPurchase = {
   currency: string;
   product: string;
   occupation: string;
+  /** Order bump (4-guide pack) taken, and what it added. */
+  orderBump: boolean;
+  bumpAmountRupees: number;
 };
 
 /* Every key on every call, empty where unknown: Pabbly builds its field mapper
@@ -60,6 +63,12 @@ const s = (v: unknown) => (v == null ? '' : String(v));
 /* One constant behind both `type` and `event`, so a workflow branching on
    either takes the same path. */
 const RECORD_TYPE = 'purchase';
+
+/** `order_type` values. Fixed strings: a Pabbly router matches them exactly. */
+export const ORDER_TYPE = {
+  consultation: 'consultation_only',
+  withGuides: 'consultation_with_guides',
+} as const;
 
 export async function sendPabblyPurchase(
   p: PabblyPurchase,
@@ -115,6 +124,12 @@ export async function sendPabblyPurchase(
         currency: s(p.currency),
         product: s(p.product),
         occupation: s(p.occupation),
+        /* The router key for the workflow: branch on this to split plain
+           consultations from consultation + guide pack (send the PDFs). */
+        order_type: p.orderBump ? ORDER_TYPE.withGuides : ORDER_TYPE.consultation,
+        /* Real boolean, same reason as is_test. */
+        order_bump: Boolean(p.orderBump),
+        bump_amount: p.orderBump ? p.bumpAmountRupees : 0,
       }),
     });
     return { ok: res.ok, status: res.status };

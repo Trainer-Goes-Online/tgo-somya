@@ -1,7 +1,7 @@
 'use client';
 
-import { site } from '@/lib/site';
-import { GA4_ITEM_ID, PRODUCT_LABEL } from '@/lib/offer';
+import { bumpInr, site } from '@/lib/site';
+import { BUMP_GA4_ITEM_ID, BUMP_PRODUCT_LABEL, GA4_ITEM_ID, PRODUCT_LABEL } from '@/lib/offer';
 import { collectSignals } from '@/lib/client-signals';
 import type { SendableEvent } from '@/lib/meta-capi';
 import {
@@ -41,6 +41,8 @@ type Person = {
   country?: string;
   occupation?: string;
   paymentId?: string;
+  /** Order bump ticked. The CAPI route adds its value server-side. */
+  bump?: boolean;
 };
 
 /** Fire-and-forget, keepalive so it survives the navigation a click causes. */
@@ -86,7 +88,16 @@ export function trackInitiateCheckout(person: Person) {
   if (person.occupation === 'working_professional') {
     capi('qualified_form', person);
   }
-  ga4AddPaymentInfo({ value: VALUE, currency: 'INR' });
+  ga4AddPaymentInfo({ value: VALUE + (person.bump ? bumpInr : 0), currency: 'INR' });
+}
+
+/** The order bump was ticked on. GA4 only: a cart change, not a Meta event. */
+export function trackBumpAdded() {
+  ga4AddToCart({
+    value: bumpInr,
+    currency: 'INR',
+    items: [{ item_id: BUMP_GA4_ITEM_ID, item_name: BUMP_PRODUCT_LABEL, price: bumpInr, quantity: 1 }],
+  });
 }
 
 /** GA4 only. Meta's sales comes from the webhook. */

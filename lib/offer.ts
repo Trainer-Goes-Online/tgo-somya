@@ -30,6 +30,26 @@ export const START_SCOPE =
 export const PRODUCT_LABEL = 'Consultation Booking';
 export const GA4_ITEM_ID = 'somya-start';
 
+/* ── Order bump: the 4-guide pack (GGT_Guide1..4 PDFs) ─────────────────────── */
+
+export const BUMP_TITLE = '4 ready-to-use guides for your fertility & weight-loss goals.';
+
+/** One line per PDF. Titles and taglines are the guides' own cover copy. */
+export const BUMP_GUIDES: { title: string; sub: string }[] = [
+  { title: 'Pre-Pregnancy Weight-Loss Foods Guide', sub: 'Everyday foods & smarter portion choices' },
+  { title: 'PCOD-Friendly Recipe Guide', sub: '5 easy meals & snacks for busy days' },
+  { title: 'Hormone-Friendly Drinks Guide', sub: '5 easy drinks with everyday ingredients' },
+  { title: 'Healthy Eating-Out Guide', sub: 'Smarter choices for restaurants & office meals' },
+];
+
+/** Bundle artwork. Original in assets-source/bump-guide-bundle.png; go through asset(). */
+export const BUMP_IMAGE = '/bump/guide-bundle-640.webp';
+export const BUMP_THUMB = '/bump/guide-bundle-160.webp';
+
+/** Neutral, like PRODUCT_LABEL: reaches GA4 and Pabbly, never Meta. */
+export const BUMP_PRODUCT_LABEL = 'Guide Pack Add-on';
+export const BUMP_GA4_ITEM_ID = 'somya-guides';
+
 /* ── Verbatim from funnel-copy/01-landing-vsl.md ─────────────────────────── */
 
 export const PROGRAMME_TITLE = '90-Day Fertility & Weight Management Programme';
