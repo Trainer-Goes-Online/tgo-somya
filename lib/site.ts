@@ -15,5 +15,11 @@ export const site = {
 export const feePaise = site.feeInr * 100;
 export const feeLabel = `₹${site.feeInr.toLocaleString('en-IN')}`;
 
+/** The one-time order bump on /checkout (the 4-guide pack). Same rule as the fee. */
+export const bumpInr = Number(process.env.NEXT_PUBLIC_BUMP_RUPEES ?? '497') || 497;
+export const bumpPaise = bumpInr * 100;
+export const inr = (n: number) => `₹${n.toLocaleString('en-IN')}`;
+export const bumpLabel = inr(bumpInr);
+
 /** The copy's CTA, verbatim. */
 export const CTA_LABEL = 'Click Here To Get My Personalised Fertility & Weight-Loss Plan';

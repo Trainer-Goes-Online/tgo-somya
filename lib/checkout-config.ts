@@ -1,4 +1,4 @@
-import { site, feePaise } from '@/lib/site';
+import { site, feePaise, bumpInr, bumpPaise } from '@/lib/site';
 import { GA4_ITEM_ID, PRODUCT_LABEL } from '@/lib/offer';
 
 /**
@@ -17,6 +17,9 @@ export const siteUrlReady = () => Boolean(SITE_URL);
 export const CHECKOUT_CONFIG = {
   amountRupees: site.feeInr,
   amountPaise: feePaise,
+  /* The order bump. The server adds it; the browser only says yes or no. */
+  bumpRupees: bumpInr,
+  bumpPaise,
   currency: 'INR',
   contentName: PRODUCT_LABEL,
   itemId: GA4_ITEM_ID,

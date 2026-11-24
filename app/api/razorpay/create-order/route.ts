@@ -50,6 +50,9 @@ export async function POST(req: Request) {
   const city = truncate(body.city, 80).trim();
   const country = truncate(body.country, 2).trim().toLowerCase() || 'in';
   const occupation = truncate(body.occupation, 32).trim();
+  /* Strictly true, never truthy. The price is the server's, never the body's. */
+  const bump = body.bump === true;
+  const amountPaise = CHECKOUT_CONFIG.amountPaise + (bump ? CHECKOUT_CONFIG.bumpPaise : 0);
 
   if (!firstName || !lastName || !email || !phone || !city) {
     return NextResponse.json({ ok: false, reason: 'missing-fields' }, { status: 400 });
@@ -96,6 +99,8 @@ export async function POST(req: Request) {
       oc: truncate(occupation, 32),
       xid: truncate(body.externalId, 40),
       ga: truncate(body.gaClientId, 40),
+      /* Order bump taken. In the bundle so the spare 15th key stays spare. */
+      bp: bump ? '1' : '0',
     }),
     /* TGO's convention: medium/campaign/content carry Meta names, term the
        ad id. 20/55/55/55/25 serialises to 246 of 256. */
@@ -135,7 +140,7 @@ export async function POST(req: Request) {
         authorization: `Basic ${Buffer.from(`${keyId}:${keySecret}`).toString('base64')}`,
       },
       body: JSON.stringify({
-        amount: CHECKOUT_CONFIG.amountPaise,
+        amount: amountPaise,
         currency: CHECKOUT_CONFIG.currency,
         receipt: `sm_${Date.now()}`,
         notes,
@@ -171,6 +176,7 @@ export async function POST(req: Request) {
       orderId: order.id,
       amount: order.amount,
       currency: order.currency,
+      bump,
       keyId, // publishable by design: the browser needs it to open the sheet
     });
   } catch (e) {

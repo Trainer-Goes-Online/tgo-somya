@@ -15,11 +15,22 @@
 import Link from 'next/link';
 import { useEffect, useMemo, useRef, useState } from 'react';
 
-import { feeLabel } from '@/lib/site';
+import { bumpInr, bumpLabel, feeLabel, inr, site } from '@/lib/site';
 import { LEGAL } from '@/lib/legal';
-import { GUARANTEE_NAME, OFFER_PENDING, START_COVERS, START_SCOPE, START_TITLE, START_WITH } from '@/lib/offer';
+import {
+  BUMP_GUIDES,
+  BUMP_THUMB,
+  GUARANTEE_NAME,
+  OFFER_PENDING,
+  START_COVERS,
+  START_SCOPE,
+  START_TITLE,
+  START_WITH,
+} from '@/lib/offer';
 import { collectSignals } from '@/lib/client-signals';
-import { trackAddToCart, trackBeginCheckout, trackInitiateCheckout } from '@/lib/track';
+import { trackAddToCart, trackBeginCheckout, trackBumpAdded, trackInitiateCheckout } from '@/lib/track';
+import { OrderBump, OrderBumpMini } from './OrderBump';
+import { ThemedSelect } from './ThemedSelect';
 import { asset } from '@/app/_landing/asset-version';
 import { SiteFooter } from '@/components/shared/SiteFooter';
 import { PaymentLogos } from '@/components/shared/PaymentLogos';
@@ -95,6 +106,12 @@ const OCCUPATIONS = [
   { value: 'homemaker', label: 'Homemaker' },
 ] as const;
 
+const COUNTRY_OPTIONS = COUNTRIES.map((c) => ({ value: c.iso, label: c.label }));
+const OCCUPATION_OPTIONS = [
+  { value: '', label: 'Please choose' },
+  ...OCCUPATIONS.map((o) => ({ value: o.value, label: o.label })),
+];
+
 type Fields = {
   firstName: string;
   lastName: string;
@@ -119,6 +136,19 @@ export default function CheckoutPage() {
   const [busy, setBusy] = useState(false);
   const [failed, setFailed] = useState('');
   const [ack, setAck] = useState(false);
+  const [bump, setBumpState] = useState(false);
+
+  /* Display only. create-order computes the charged amount itself. */
+  const totalLabel = inr(site.feeInr + (bump ? bumpInr : 0));
+
+  const bumpAddedOnce = useRef(false);
+  const setBump = (on: boolean) => {
+    setBumpState(on);
+    if (on && !bumpAddedOnce.current) {
+      bumpAddedOnce.current = true;
+      trackBumpAdded();
+    }
+  };
 
   /* The only Meta event a direct arrival gets. Ref-guarded against StrictMode. */
   const arrived = useRef(false);
@@ -161,6 +191,7 @@ export default function CheckoutPage() {
       city: f.city.trim(),
       country: f.country,
       occupation: f.occupation,
+      bump,
     });
 
     try {
@@ -179,6 +210,7 @@ export default function CheckoutPage() {
           country: f.country,
           occupation: f.occupation,
           dialCode: dial,
+          bump,
           ...collectSignals(),
         }),
       });
@@ -339,25 +371,22 @@ export default function CheckoutPage() {
                   bad={touched && !v.city}
                 />
 
-                <label>
+                {/* div, not label: a label would forward clicks on its text to the dropdown button. */}
+                <div>
                   <span className="f-label">WhatsApp number</span>
                   <div className="pay-phone">
-                    <select
-                      autoComplete="tel-country-code"
-                      aria-label="Country dialling code"
+                    <ThemedSelect
+                      className="tsel-dial"
+                      ariaLabel="Country dialling code"
                       value={f.country}
-                      onChange={(e) => setF((s) => ({ ...s, country: e.target.value }))}
-                    >
-                      {COUNTRIES.map((c) => (
-                        <option key={c.iso} value={c.iso}>
-                          {c.label}
-                        </option>
-                      ))}
-                    </select>
+                      options={COUNTRY_OPTIONS}
+                      onChange={(x) => setF((s) => ({ ...s, country: x }))}
+                    />
                     <input
                       type="tel"
                       inputMode="numeric"
                       autoComplete="tel-national"
+                      aria-label="WhatsApp number"
                       placeholder="98XXX XXXXX"
                       value={f.phone}
                       onChange={(e) => setF((s) => ({ ...s, phone: e.target.value }))}
@@ -365,25 +394,23 @@ export default function CheckoutPage() {
                     />
                   </div>
                   <span className="f-note">We will contact you on this number.</span>
-                </label>
+                </div>
 
-                <label>
+                <div>
                   <span className="f-label">You are currently</span>
-                  <select
+                  <ThemedSelect
+                    ariaLabel="You are currently"
                     value={f.occupation}
-                    onChange={(e) => setF((s) => ({ ...s, occupation: e.target.value }))}
-                    aria-invalid={(touched && !v.occupation) || undefined}
-                  >
-                    <option value="">Please choose</option>
-                    {OCCUPATIONS.map((o) => (
-                      <option key={o.value} value={o.value}>
-                        {o.label}
-                      </option>
-                    ))}
-                  </select>
+                    options={OCCUPATION_OPTIONS}
+                    placeholder="Please choose"
+                    onChange={(x) => setF((s) => ({ ...s, occupation: x }))}
+                    invalid={touched && !v.occupation}
+                  />
                   <span className="f-note">So your plan is built around the hours you actually have.</span>
-                </label>
+                </div>
               </div>
+
+              <OrderBump on={bump} onChange={setBump} />
 
               <label className="pay-ack">
                 <input
@@ -412,7 +439,7 @@ export default function CheckoutPage() {
               {failed && <p className="pay-error">{failed}</p>}
 
               <button type="submit" className="pay-cta" disabled={busy}>
-                {busy ? <span>Taking you to payment</span> : <CtaLabel />}
+                {busy ? <span>Taking you to payment</span> : <CtaLabel total={totalLabel} />}
                 <span className="arrow" aria-hidden>
                   <ArrowRightIcon size={13} />
                 </span>
@@ -448,7 +475,7 @@ export default function CheckoutPage() {
             </form>
 
             <div className="pay-sum-col">
-              <OrderSummary />
+              <OrderSummary bump={bump} totalLabel={totalLabel} />
             </div>
           </div>
         </div>
@@ -456,16 +483,23 @@ export default function CheckoutPage() {
 
       <div className="pay-stuck" aria-hidden={busy ? true : undefined}>
         <div className="pay-stuck-inner">
-          <span className="pay-stuck-fig">
-            <span className="pay-stuck-cap">Total due today</span>
-            <strong>{feeLabel}</strong>
-          </span>
-          <button type="submit" form="pay-form" className="pay-stuck-go" disabled={busy}>
-            {busy ? <span>Taking you to payment</span> : <CtaLabel />}
-            <span className="arrow" aria-hidden>
-              <ArrowRightIcon size={12} />
+          <OrderBumpMini on={bump} onChange={setBump} />
+          <div className="pay-stuck-row">
+            <span className="pay-stuck-fig">
+              <span className="pay-stuck-cap">Total due today</span>
+              {/* Keyed so the figure re-pops each time the bump changes it. */}
+              <strong key={totalLabel} className="fig-pop">
+                {totalLabel}
+              </strong>
             </span>
-          </button>
+            <button type="submit" form="pay-form" className="pay-stuck-go" disabled={busy}>
+              {/* No price here: the total sits beside it, and one line fits at 360px. */}
+              {busy ? <span>Taking you to payment</span> : <span>Book My Consultation Now</span>}
+              <span className="arrow" aria-hidden>
+                <ArrowRightIcon size={12} />
+              </span>
+            </button>
+          </div>
         </div>
       </div>
 
@@ -486,11 +520,11 @@ function readToken(name: string, fallback: string): string {
 }
 
 /** One label for the pay button and the docked bar. No list price, so one line. */
-function CtaLabel() {
-  return <span>Book My Consultation Now - {feeLabel}</span>;
+function CtaLabel({ total }: { total: string }) {
+  return <span>Book My Consultation Now - {total}</span>;
 }
 
-function OrderSummary() {
+function OrderSummary({ bump, totalLabel }: { bump: boolean; totalLabel: string }) {
   return (
     <div className="sum">
       <p className="pay-eyebrow">ORDER SUMMARY</p>
@@ -511,6 +545,18 @@ function OrderSummary() {
         </span>
         <span className="sum-lead-price">{feeLabel}</span>
       </div>
+
+      {bump && (
+        <div className="sum-lead sum-bump">
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img className="sum-lead-chip sum-bump-chip" src={asset(BUMP_THUMB)} alt="" aria-hidden width={52} height={52} />
+          <span className="sum-lead-body">
+            <b>{BUMP_GUIDES.length} Ready-to-Use Guides</b>
+            <span>One-time add-on &middot; PDF pack</span>
+          </span>
+          <span className="sum-lead-price">+{bumpLabel}</span>
+        </div>
+      )}
 
       <div className="sum-details">
         <p className="sum-sub">WHAT IS INCLUDED</p>
@@ -534,7 +580,9 @@ function OrderSummary() {
 
       <div className="sum-total">
         <span className="sum-total-label">Total</span>
-        <span className="sum-total-fig">{feeLabel}</span>
+        <span key={totalLabel} className="sum-total-fig fig-pop">
+          {totalLabel}
+        </span>
       </div>
 
       <div className="sum-method">

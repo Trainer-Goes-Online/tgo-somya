@@ -30,6 +30,8 @@ export type OrderContext = {
   country: string;
   /** The qualified_form segment answer. */
   occupation: string;
+  /** The checkout order bump (4-guide pack) was taken. */
+  bump: boolean;
   externalId: string;
   fbc: string;
   fbp: string;
@@ -53,6 +55,7 @@ export const EMPTY_CONTEXT: OrderContext = {
   dialCode: '',
   country: '',
   occupation: '',
+  bump: false,
   externalId: '',
   fbc: '',
   fbp: '',
@@ -99,6 +102,7 @@ export function readOrderContext(notes: Record<string, unknown>): OrderContext {
     dialCode: str(cust.dl),
     country: str(cust.co),
     occupation: str(meta.oc),
+    bump: str(meta.bp) === '1',
     externalId: str(meta.xid),
     gaCid: str(meta.ga),
     fbc: str(notes.fbc),
